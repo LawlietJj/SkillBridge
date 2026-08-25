@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getProjects } from "../services/api";
+import { getProjects } from "../Services/api";
 import {
   ArrowRight,
   BookOpen,
@@ -15,7 +15,7 @@ function Projects() {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user") || "null");
+  const [user] = useState(() => JSON.parse(localStorage.getItem("user") || "null"));
 
   useEffect(() => {
     if (!user) {
@@ -26,7 +26,7 @@ function Projects() {
     async function loadProjects() {
       try {
         const res = await getProjects();
-        setProjects(res.data.projects);
+        setProjects(res.data.projects || []);
       } catch (err) {
         console.error("Project loading error:", err);
         setError("Failed to load projects");
@@ -36,7 +36,7 @@ function Projects() {
     }
 
     loadProjects();
-  }, [navigate]);
+  }, [navigate, user]);
 
   /*
    * Loading state

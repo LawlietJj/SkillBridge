@@ -6,9 +6,15 @@ async function getAllProjects() {
 
     try{
         const result = await session.run(
-            `MATCH (p:Project) RETURN p`
+            `MATCH (p:Project)
+             OPTIONAL MATCH (p)-[:TEACHES]->(skill:Skill)
+             RETURN p, collect(DISTINCT skill.name) AS skills
+             ORDER BY p.id`
         );
-        return result.records.map(record => record.get('p').properties);
+        return result.records.map(record => ({
+            ...record.get('p').properties,
+            skills: record.get('skills').filter(Boolean)
+        }));
     } finally {
         await session.close();
     }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getPathToGoal } from "../services/api";
+import { getPathToGoal } from "../Services/api";
 import {
   ArrowLeft,
   ArrowRight,
@@ -14,11 +14,15 @@ function SkillPath() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const user = JSON.parse(localStorage.getItem("user") || "null");
-  const careerName = location.state?.careerName;
+  const [user] = useState(() => JSON.parse(localStorage.getItem("user") || "null"));
+  const careerName =
+    location.state?.careerName || localStorage.getItem("selectedCareer");
+  const missingCareerError = careerName
+    ? ""
+    : "No career goal selected. Go back to the Dashboard and pick one.";
 
   const [paths, setPaths] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(Boolean(user && careerName));
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -28,18 +32,16 @@ function SkillPath() {
     }
 
     if (!careerName) {
-      setError(
-        "No career goal selected. Go back to the Dashboard and pick one."
-      );
-      setLoading(false);
       return;
     }
+
+    localStorage.setItem("selectedCareer", careerName);
 
     async function loadPath() {
       try {
         const res = await getPathToGoal(user.id, careerName);
-        setPaths(res.data.paths);
-      } catch (err) {
+        setPaths(res.data.paths || []);
+      } catch {
         setError("Failed to load skill path");
       } finally {
         setLoading(false);
@@ -47,7 +49,7 @@ function SkillPath() {
     }
 
     loadPath();
-  }, [careerName]);
+  }, [careerName, navigate, user]);
 
   if (loading) {
     return (
@@ -69,7 +71,9 @@ function SkillPath() {
     );
   }
 
-  if (error) {
+  const pageError = missingCareerError || error;
+
+  if (pageError) {
     return (
       <div className="min-h-screen bg-slate-50">
         <main className="max-w-3xl mx-auto px-6 py-10">
@@ -83,7 +87,7 @@ function SkillPath() {
             </h1>
 
             <p className="text-sm text-slate-500 mt-2">
-              {error}
+              {pageError}
             </p>
 
             <button

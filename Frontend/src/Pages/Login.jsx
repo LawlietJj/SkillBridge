@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login, signup } from "../services/api";
+import { login, signup } from "../Services/api";
 
 function Login() {
   const [isSignup, setIsSignup] = useState(false);

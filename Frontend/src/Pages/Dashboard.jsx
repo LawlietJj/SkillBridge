@@ -1,23 +1,24 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getStudent, getCareers } from "../services/api";
+import { getStudent, getCareers } from "../Services/api";
 import {
   BookOpen,
   Briefcase,
   Target,
   ArrowRight,
-  LogOut,
 } from "lucide-react";
 
 function Dashboard() {
   const [student, setStudent] = useState(null);
   const [careers, setCareers] = useState([]);
-  const [selectedCareer, setSelectedCareer] = useState("");
+  const [selectedCareer, setSelectedCareer] = useState(
+    () => localStorage.getItem("selectedCareer") || ""
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user") || "null");
+  const [user] = useState(() => JSON.parse(localStorage.getItem("user") || "null"));
 
   useEffect(() => {
     if (!user) {
@@ -35,8 +36,12 @@ function Dashboard() {
         setStudent(studentRes.data.student);
         setCareers(careersRes.data.careers);
 
-        if (studentRes.data.student.interests?.length > 0) {
-          setSelectedCareer(studentRes.data.student.interests[0]);
+        const savedCareer = localStorage.getItem("selectedCareer");
+        const defaultCareer = savedCareer || studentRes.data.student.interests?.[0] || "";
+
+        if (defaultCareer) {
+          setSelectedCareer(defaultCareer);
+          localStorage.setItem("selectedCareer", defaultCareer);
         }
       } catch {
         setError("Failed to load dashboard");
@@ -46,11 +51,25 @@ function Dashboard() {
     }
 
     loadData();
-  }, []);
+  }, [navigate, user]);
 
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/");
+  const handleCareerChange = (careerName) => {
+    setSelectedCareer(careerName);
+
+    if (careerName) {
+      localStorage.setItem("selectedCareer", careerName);
+    } else {
+      localStorage.removeItem("selectedCareer");
+    }
+  };
+
+  const handleViewSkillPath = () => {
+    if (!selectedCareer) return;
+
+    localStorage.setItem("selectedCareer", selectedCareer);
+    navigate("/skill-path", {
+      state: { careerName: selectedCareer },
+    });
   };
 
   if (loading) {
@@ -184,7 +203,7 @@ function Dashboard() {
 
             <select
               value={selectedCareer}
-              onChange={(e) => setSelectedCareer(e.target.value)}
+              onChange={(e) => handleCareerChange(e.target.value)}
               className="w-full border border-slate-300 rounded-lg px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-800"
             >
               <option value="">Select a career</option>
@@ -207,11 +226,7 @@ function Dashboard() {
             </div>
 
             <button
-              onClick={() =>
-                navigate("/skill-path", {
-                  state: { careerName: selectedCareer },
-                })
-              }
+              onClick={handleViewSkillPath}
               disabled={!selectedCareer}
               className="w-full mt-6 bg-slate-800 hover:bg-slate-900 text-white rounded-lg py-3 font-medium disabled:opacity-40 flex items-center justify-center gap-2"
             >

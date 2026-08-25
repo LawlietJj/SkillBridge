@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   getPathToGoal,
   getMentorCoverage,
-} from "../services/api";
+} from "../Services/api";
 import {
   ArrowLeft,
   ArrowRight,
@@ -14,19 +14,24 @@ import {
 
 const toSkillId = (name) =>
   name
+    .trim()
     .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/\//g, "-");
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 
 function Mentors() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const user = JSON.parse(localStorage.getItem("user") || "null");
-  const careerName = location.state?.careerName;
+  const [user] = useState(() => JSON.parse(localStorage.getItem("user") || "null"));
+  const careerName =
+    location.state?.careerName || localStorage.getItem("selectedCareer");
+  const missingCareerError = careerName
+    ? ""
+    : "No career goal selected. Go back to the Dashboard and pick one.";
 
   const [mentors, setMentors] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(Boolean(user && careerName));
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -36,17 +41,15 @@ function Mentors() {
     }
 
     if (!careerName) {
-      setError(
-        "No career goal selected. Go back to the Dashboard and pick one."
-      );
-      setLoading(false);
       return;
     }
+
+    localStorage.setItem("selectedCareer", careerName);
 
     async function loadMentors() {
       try {
         const pathRes = await getPathToGoal(user.id, careerName);
-        const paths = pathRes.data.paths;
+        const paths = pathRes.data.paths || [];
 
         if (paths.length === 0) {
           setMentors([]);
@@ -56,19 +59,19 @@ function Mentors() {
 
         // First skill = already known.
         // Remaining skills = upcoming learning requirements.
-        const upcomingSkillNames = [
-          ...new Set(paths.flatMap((p) => p.slice(1))),
-        ].map(toSkillId);
+        const upcomingSkillIds = [
+          ...new Set(paths.flatMap((p) => p.slice(1).map(toSkillId))),
+        ];
 
-        if (upcomingSkillNames.length === 0) {
+        if (upcomingSkillIds.length === 0) {
           setMentors([]);
           setLoading(false);
           return;
         }
 
-        const mentorRes = await getMentorCoverage(upcomingSkillNames);
+        const mentorRes = await getMentorCoverage(upcomingSkillIds);
 
-        setMentors(mentorRes.data.mentors);
+        setMentors(mentorRes.data.mentors || []);
       } catch (err) {
         console.error("Mentor loading error:", err);
         setError("Failed to load mentors");
@@ -78,7 +81,7 @@ function Mentors() {
     }
 
     loadMentors();
-  }, [careerName, navigate]);
+  }, [careerName, navigate, user]);
 
   // Loading state
   if (loading) {
@@ -102,7 +105,9 @@ function Mentors() {
   }
 
   // Error state
-  if (error) {
+  const pageError = missingCareerError || error;
+
+  if (pageError) {
     return (
       <div className="min-h-screen bg-slate-50">
         <main className="max-w-3xl mx-auto px-6 py-10">
@@ -116,7 +121,7 @@ function Mentors() {
             </h1>
 
             <p className="text-sm text-slate-500 mt-2">
-              {error}
+              {pageError}
             </p>
 
             <button
