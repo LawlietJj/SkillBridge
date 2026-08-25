@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login, signup } from "../services/api";
-import { GraduationCap, ArrowRight, Sparkles, Network } from "lucide-react";
 
 function Login() {
   const [isSignup, setIsSignup] = useState(false);
@@ -37,183 +36,173 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#09090B] text-white relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 grid lg:grid-cols-2">
 
-      {/* Background Glow */}
-      <div className="absolute -top-40 -left-32 w-[420px] h-[420px] bg-indigo-600/20 blur-[120px] rounded-full" />
-      <div className="absolute bottom-0 right-0 w-[380px] h-[380px] bg-cyan-500/10 blur-[120px] rounded-full" />
+      {/* Left Panel */}
+      <div className="hidden lg:flex bg-slate-800 text-white p-14 flex-col justify-between">
 
-      <div className="relative z-10 grid lg:grid-cols-2 min-h-screen">
-
-        {/* Left Branding */}
-        <div className="hidden lg:flex flex-col justify-between p-12 border-r border-white/10">
-
-          <div>
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-11 h-11 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10">
-                <Network size={22} />
-              </div>
-
-              <div>
-                <h1 className="font-bold text-xl">SkillBridge</h1>
-                <p className="text-xs text-zinc-400">
-                  AI Learning Graph
-                </p>
-              </div>
-            </div>
-
-            <div className="max-w-md">
-              <h2 className="text-5xl font-semibold leading-tight tracking-tight">
-                Learn through
-                <span className="text-indigo-400"> connections.</span>
-              </h2>
-
-              <p className="mt-6 text-zinc-400 leading-7">
-                Discover the shortest path to your dream career using
-                graph-powered prerequisite mapping, mentor matching,
-                and project recommendations.
-              </p>
-            </div>
+        <div>
+          <div className="w-12 h-12 bg-white text-slate-800 flex items-center justify-center font-bold text-xl rounded-md">
+            SB
           </div>
 
-          {/* Feature Cards */}
-          <div className="space-y-4">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-              <div className="flex items-center gap-3">
-                <Sparkles className="text-indigo-400" size={18} />
-                <p className="font-medium">AI Career Path</p>
-              </div>
-              <p className="text-sm text-zinc-400 mt-2">
-                Build personalized learning journeys from beginner to expert.
-              </p>
-            </div>
+          <h1 className="text-4xl font-semibold mt-10 leading-tight">
+            Personalized Learning.
+            <br />
+            Connected Careers.
+          </h1>
 
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-              <div className="flex items-center gap-3">
-                <GraduationCap className="text-cyan-400" size={18} />
-                <p className="font-medium">Graph Recommendations</p>
-              </div>
-              <p className="text-sm text-zinc-400 mt-2">
-                Find mentors and projects through multi-hop graph traversal.
-              </p>
-            </div>
-          </div>
+          <p className="text-slate-300 mt-6 leading-7 max-w-md">
+            SkillBridge helps students discover the exact skills,
+            mentors and projects required to reach their career goals
+            using graph-powered learning paths.
+          </p>
         </div>
 
-        {/* Right Form */}
-        <div className="flex items-center justify-center px-6 py-10">
+        <div className="space-y-5 border-t border-slate-700 pt-8">
 
-          <div className="w-full max-w-md">
+          <div>
+            <p className="text-sm font-medium">Skill Graph</p>
+            <p className="text-sm text-slate-400 mt-1">
+              Visualize prerequisite relationships between skills.
+            </p>
+          </div>
 
-            <div className="lg:hidden flex items-center gap-3 mb-10 justify-center">
-              <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
-                <Network size={20} />
-              </div>
+          <div>
+            <p className="text-sm font-medium">Mentor Matching</p>
+            <p className="text-sm text-slate-400 mt-1">
+              Find mentors connected to your learning journey.
+            </p>
+          </div>
 
-              <div>
-                <h1 className="font-bold text-lg">SkillBridge</h1>
-                <p className="text-xs text-zinc-400">
-                  AI Learning Graph
-                </p>
-              </div>
+          <div>
+            <p className="text-sm font-medium">Project Roadmap</p>
+            <p className="text-sm text-slate-400 mt-1">
+              Build portfolio projects as you progress.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Right Panel */}
+      <div className="flex items-center justify-center p-6 lg:p-12">
+
+        <div className="w-full max-w-md">
+
+          {/* Mobile Logo */}
+          <div className="lg:hidden mb-8 flex items-center gap-3">
+            <div className="w-11 h-11 bg-slate-800 text-white rounded-md flex items-center justify-center font-bold">
+              SB
+            </div>
+            <div>
+              <h1 className="font-semibold text-slate-900">SkillBridge</h1>
+              <p className="text-sm text-slate-500">
+                Learning Graph Platform
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white border border-slate-200 rounded-md p-8">
+
+            <div className="mb-8">
+              <p className="text-sm text-slate-500">
+                Welcome to SkillBridge
+              </p>
+
+              <h2 className="text-3xl font-semibold text-slate-900 mt-1">
+                {isSignup ? "Create account" : "Sign in"}
+              </h2>
             </div>
 
-            <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 shadow-2xl">
-
-              <div className="mb-6">
-                <h2 className="text-3xl font-semibold">
-                  {isSignup ? "Create account" : "Welcome back"}
-                </h2>
-
-                <p className="text-zinc-400 mt-2 text-sm">
-                  {isSignup
-                    ? "Start building your personalized career journey."
-                    : "Sign in to continue exploring your learning graph."}
-                </p>
+            {error && (
+              <div className="mb-6 border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 rounded-md">
+                {error}
               </div>
+            )}
 
-              {error && (
-                <div className="mb-5 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
-                  {error}
+            <form onSubmit={handleSubmit} className="space-y-5">
+
+              {isSignup && (
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    className="w-full border border-slate-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-800 focus:border-slate-800"
+                    placeholder="James Josiah"
+                  />
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-4">
-
-                {isSignup && (
-                  <div>
-                    <label className="text-sm text-zinc-300 mb-2 block">
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                      className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none focus:border-indigo-400 transition"
-                      placeholder="James Josiah"
-                    />
-                  </div>
-                )}
-
-                <div>
-                  <label className="text-sm text-zinc-300 mb-2 block">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none focus:border-indigo-400 transition"
-                    placeholder="you@example.com"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm text-zinc-300 mb-2 block">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 outline-none focus:border-indigo-400 transition"
-                    placeholder="••••••••"
-                  />
-                </div>
-
-                <button
-                  disabled={loading}
-                  className="w-full mt-2 rounded-xl bg-white text-black py-3 font-semibold hover:bg-zinc-200 transition disabled:opacity-50 flex items-center justify-center gap-2"
-                >
-                  {loading ? "Please wait..." : isSignup ? "Create Account" : "Sign In"}
-                  {!loading && <ArrowRight size={18} />}
-                </button>
-              </form>
-
-              <div className="mt-6 text-center text-sm text-zinc-400">
-                {isSignup ? "Already have an account?" : "Don't have an account?"}
-
-                <button
-                  onClick={() => setIsSignup(!isSignup)}
-                  className="ml-2 text-white font-medium hover:text-indigo-400 transition"
-                >
-                  {isSignup ? "Sign In" : "Create one"}
-                </button>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full border border-slate-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-800 focus:border-slate-800"
+                  placeholder="you@example.com"
+                />
               </div>
 
-            </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full border border-slate-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-800 focus:border-slate-800"
+                  placeholder="••••••••"
+                />
+              </div>
 
-            <p className="text-center text-xs text-zinc-500 mt-6">
-              Powered by CognoDB • Graph Database Learning Platform
-            </p>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-slate-800 hover:bg-slate-900 text-white py-3 rounded-md font-medium transition disabled:opacity-60"
+              >
+                {loading
+                  ? "Please wait..."
+                  : isSignup
+                  ? "Create Account"
+                  : "Sign In"}
+              </button>
+
+            </form>
+
+            <div className="mt-8 pt-6 border-t border-slate-200 text-center">
+              <p className="text-sm text-slate-500">
+                {isSignup
+                  ? "Already have an account?"
+                  : "Don't have an account?"}
+              </p>
+
+              <button
+                onClick={() => setIsSignup(!isSignup)}
+                className="mt-2 text-sm font-medium text-slate-800 hover:underline"
+              >
+                {isSignup ? "Sign In" : "Create Account"}
+              </button>
+            </div>
 
           </div>
 
-        </div>
+          <p className="text-center text-xs text-slate-400 mt-6">
+            © 2026 SkillBridge. Built with CognoDB.
+          </p>
 
+        </div>
       </div>
     </div>
   );
