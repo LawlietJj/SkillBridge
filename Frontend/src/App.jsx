@@ -3,7 +3,7 @@ import Dashboard from './Pages/Dashboard.jsx'
 import Mentors from './Pages/Mentors.jsx'
 import Project from './Pages/Project.jsx'
 import SkillPath from './Pages/SkillPath.jsx'
-import Navbar from './Components/Navbar';
+import Navbar from './Components/Navbar.jsx';
 import { Routes, Route,useLocation } from 'react-router-dom';
 
 
