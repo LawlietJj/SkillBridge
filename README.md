@@ -218,22 +218,28 @@ SkillBridge/
 `-- README.md
 ```
 
+
 ## Screenshots
 
-**Login**
-![Login page](screenshots/login.png)
+### Login
 
-**Dashboard**
-![Dashboard](screenshots/dashboard.png)
+![Login](Screenshots/login.png)
 
-**Skill Path**
-![Skill path chain](screenshots/skill-path.png)
+### Dashboard
 
-**Mentors**
-![Mentor ranking](screenshots/mentors.png)
+![Dashboard](Screenshots/dashboard.png)
 
-**Projects**
-![Projects list](screenshots/projects.png)
+### Skill Path
+
+![Skill Path](Screenshots/skill-path.png)
+
+### Mentors
+
+![Mentors](Screenshots/mentors.png)
+
+### Projects
+
+![Projects](Screenshots/projects.png)
 
 ## Known Limitations
 
